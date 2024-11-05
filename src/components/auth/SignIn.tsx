@@ -23,6 +23,8 @@ import { loginSchema, loginSchemaType } from '@/lib/schemas';
 
 import Socials from './Socials';
 import FormError from './FormError';
+import { handleCredentialsSignIn } from '@/actions/authActions';
+import { Loader } from 'lucide-react';
 
 const SignIn = () => {
   const [errorMsg, setErrorMsg] = useState<string | undefined>();
@@ -35,7 +37,13 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = async (values: loginSchemaType) => {};
+  const onSubmit = async (values: loginSchemaType) => {
+    try {
+      await handleCredentialsSignIn(values);
+    } catch (error) {
+      setErrorMsg('Invalid Credentials or Try with Socials');
+    }
+  };
 
   return (
     <Card className='w-full h-full md:w-[487px] border-none md:mt-14 m-4 shadow-none'>
@@ -88,6 +96,9 @@ const SignIn = () => {
               variant='primary'
               disabled={form.formState.isSubmitting}
             >
+              {form.formState.isSubmitting && (
+                <Loader className='animate-spin' />
+              )}
               Sign In
             </Button>
           </form>

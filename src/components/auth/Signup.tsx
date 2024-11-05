@@ -23,6 +23,11 @@ import { registerSchema, registerSchemaType } from '@/lib/schemas';
 
 import Socials from './Socials';
 import FormError from './FormError';
+import {
+  handleCredentialsSignIn,
+  handleCredentialsSignUp,
+} from '@/actions/authActions';
+import { Loader } from 'lucide-react';
 
 const SignUp = () => {
   const [errorMsg, setErrorMsg] = useState<string | undefined>();
@@ -36,7 +41,25 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = async (values: registerSchemaType) => {};
+  const onSubmit = async (values: registerSchemaType) => {
+    try {
+      const result: {
+        success: boolean;
+        message: string;
+      } = await handleCredentialsSignUp(values);
+      if (result.success) {
+        const valuesForSignIn = {
+          email: values.email,
+          password: values.password,
+        };
+        await handleCredentialsSignIn(valuesForSignIn);
+      } else {
+        setErrorMsg(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Card className='w-full h-full md:w-[487px] border-none md:mt-14 m-4 shadow-none'>
@@ -104,6 +127,9 @@ const SignUp = () => {
               variant='primary'
               disabled={form.formState.isSubmitting}
             >
+              {form.formState.isSubmitting && (
+                <Loader className='animate-spin' />
+              )}
               Sign Up
             </Button>
           </form>

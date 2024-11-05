@@ -1,14 +1,16 @@
 import Link from 'next/link';
 
+import { auth } from '@/auth';
+
 import MaxWidthWrapper from './MaxWidthWrapper';
 import { buttonVariants } from './ui/button';
 import { ArrowRight } from 'lucide-react';
-
 import SignoutButton from './auth/SignoutButton';
 
 const Navbar = async () => {
-  const isAdmin = !true;
-  const user = undefined;
+  const isAdmin = true;
+  const user = await auth();
+
   return (
     <nav className='sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
       <MaxWidthWrapper>
@@ -24,7 +26,7 @@ const Navbar = async () => {
 
                 {isAdmin ? (
                   <Link
-                    href='/api/auth/logout'
+                    href='/'
                     className={buttonVariants({
                       size: 'sm',
                       variant: 'ghost',
