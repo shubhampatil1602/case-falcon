@@ -25,7 +25,7 @@ export const PHONES = [
   '/testimonials/5.png',
   '/testimonials/3.png',
   '/testimonials/2.png',
+  '/testimonials/1.png',
   '/testimonials/4.png',
-  '/testimonials/1.jpeg',
   '/testimonials/6.png',
 ];
